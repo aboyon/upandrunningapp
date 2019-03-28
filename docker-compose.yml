@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    image: postgres:10-alpine
+    env_file: .env
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    ports:
+    - '5432:5432'
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data/redis:/data
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bundle exec sidekiq
+    volumes:
+      - .:/upandrunning:cached
+    depends_on:
+      - upandrunning_web
+    env_file: .env
+  upandrunning_web:
+    container_name: upandrunning_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bundle exec rails s -p 3000 -b 0.0.0.0
+    volumes:
+      - .:/upandrunning:cached
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - db
+    env_file: .env
