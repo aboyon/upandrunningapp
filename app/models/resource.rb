@@ -13,7 +13,9 @@ class Resource < ApplicationRecord
     (exclude_tags + include_tags).map { |tag| tag.gsub!(/\W/,'') }
 
     # @Todo this can be improved for the sake of DB performace
-    Tag.where("name IN (?) AND name NOT IN (?)", include_tags, exclude_tags).flat_map(&:resources).uniq
+    query = self.joins(:tags).where("tags.name IN (?)", include_tags)
+    query = query.where("tags.name NOT IN (?)", exclude_tags) if exclude_tags.any?
+    query
   end
 
   def tag_list

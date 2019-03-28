@@ -12,8 +12,7 @@ gem 'turbolinks', '~> 5'
 gem 'execjs'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'sidekiq'
-gem 'sidekiq-scheduler'
+gem 'kaminari'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
