@@ -6,6 +6,7 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: <%= ENV.fetch("POSTGRES_HOST","localhost") %>
+  database: <%= ENV['UPANDRUNNING_DB_NAME'] %>
 
 development:
   <<: *default
@@ -16,5 +17,4 @@ test:
 #
 production:
   <<: *default
-  database: upandrunning_production
   password: <%= ENV['UPANDRUNNING_DATABASE_PASSWORD'] %>
