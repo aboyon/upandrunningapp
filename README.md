@@ -1,4 +1,7 @@
 # Up and Running Test
+[![Build Status](https://travis-ci.org/aboyon/upandrunningapp.svg?branch=master)](https://travis-ci.org/aboyon/upandrunningapp)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3fcca806fa42cc050387/maintainability)](https://codeclimate.com/github/aboyon/upandrunningapp/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3fcca806fa42cc050387/test_coverage)](https://codeclimate.com/github/aboyon/upandrunningapp/test_coverage)
 
 ## Setting up the environment
 
