@@ -49,7 +49,7 @@ docker-compose run upandrunning_web bundle exec rake db:create db:migrate RAILS_
 ```
 And then, run the specs:
 ```
-bundle exec rspec spec
+docker-compose run upandrunning_web bundle exec rspec spec
 ```
 
 ## Start the container
