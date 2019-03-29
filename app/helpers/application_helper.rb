@@ -18,4 +18,14 @@ module ApplicationHelper
       "<a href=\"#{files_path}/#{encoded_tag}/1\">#{tag}</a>"
     end.join(',')
   end
+
+  def sanitize_tags(tag_string)
+    include_tags, exclude_tags = tag_string.squeeze(' ').split(' ').partition do |tag|
+      tag.start_with?('+')
+    end
+    exclude_tags ||= [] # for the case when we don't have "negative tags"
+    exclude_tags.select! { |tag| tag.start_with?('-') } # just sanitize the tag list removing those ones not including a "-"
+    (exclude_tags + include_tags).map { |tag| tag.gsub!(/\W/,'') }
+    [include_tags, exclude_tags]
+  end
 end

@@ -1,9 +1,13 @@
 class ResourceController < ApplicationController
+  include ApplicationHelper
+
+  before_action :sanitize_tags, :only => :index
+
   def index
     @resources = if params[:filter].present?
-      Resource.page(params[:page]).tag_filter(params[:filter])
+      Resource.tag_filter(*sanitize_tags)
     else
-      Resource.page(params[:page])
+      Resource.latest
     end
   end
 
@@ -19,4 +23,5 @@ class ResourceController < ApplicationController
     def resource_params
       params.require(:resource).permit(:name, :tag_list, :filename)
     end
+
 end

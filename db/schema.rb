@@ -39,30 +39,13 @@ ActiveRecord::Schema.define(version: 2019_03_28_053133) do
   create_table "resources", force: :cascade do |t|
     t.string "name"
     t.string "filename"
+    t.string "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["filename"], name: "index_resources_on_filename"
     t.index ["name"], name: "index_resources_on_name"
-  end
-
-  create_table "taggings", force: :cascade do |t|
-    t.bigint "tag_id"
-    t.bigint "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["resource_id"], name: "index_taggings_on_resource_id"
-    t.index ["tag_id", "resource_id"], name: "index_taggings_on_tag_id_and_resource_id", unique: true
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_tags_on_name", unique: true
+    t.index ["tags"], name: "index_resources_on_tags"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "taggings", "resources"
-  add_foreign_key "taggings", "tags"
 end

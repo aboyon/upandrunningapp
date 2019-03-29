@@ -1,31 +1,42 @@
 class Resource < ApplicationRecord
-  has_many :taggings
-  has_many :tags, :through => :taggings
+
+  scope :latest, ->() { order('id DESC') }
 
   has_one_attached :filename
-  validates_presence_of :name
+  validates_presence_of :name, :tags
 
-  def self.tag_filter(tag_names)
-    include_tags, exclude_tags = tag_names.squeeze(' ').split(' ').partition do |tag|
-      tag.start_with?('+')
+  before_save :sanitize_tags
+
+  # @params <Array, include_tags> array containing the tags we're looking for
+  # @params <Array, exclude_tags> array containing the tags we want to exclude
+  def self.tag_filter(include_tags, exclude_tags = [])
+    query = self.all
+    include_tags.each do |included_tag|
+      query = query.where("tags ILIKE ?", "%#{included_tag}%")
     end
-    (exclude_tags || []).select! { |tag| tag.start_with?('-') } # just sanitize the tag list removing those ones not including a "-"
-    (exclude_tags + include_tags).map { |tag| tag.gsub!(/\W/,'') }
-
-    # @Todo this can be improved for the sake of DB performace
-    query = self.joins(:tags).where("tags.name IN (?)", include_tags)
-    query = query.where("tags.name NOT IN (?)", exclude_tags) if exclude_tags.any?
+    exclude_tags.each do |excluded_tag|
+      query = query.where("tags NOT ILIKE ?", "%#{excluded_tag}%")
+    end
     query
   end
 
-  def tag_list
-    tags.pluck(:name)
+  def self.related_content(search, include_tags, exclude_tags = [])
+    related_tags = (search.flat_map(&:tag_list) - include_tags).uniq
+    Hash[
+      related_tags.map do |tag|
+        [tag, self.tag_filter([tag], exclude_tags).count]
+      end
+    ]
   end
 
-  def tag_list=(names)
-    self.tags = names.split(',').map do |tag_name|
-      Tag.where(name: tag_name.strip).first_or_create!
-    end
+  def tag_list
+    tags.split(',')
   end
+
+  private
+
+    def sanitize_tags
+      self.tags = tags.split(',').map(&:strip).sort.join(',')
+    end
 
 end
