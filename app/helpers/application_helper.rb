@@ -28,4 +28,13 @@ module ApplicationHelper
     (exclude_tags + include_tags).map { |tag| tag.gsub!(/\W/,'') }
     [include_tags, exclude_tags]
   end
+
+  def render_resource(file)
+    case file.filename.content_type.downcase
+    when "image/jpeg", "image/png"
+      "<img src='#{url_for(file.filename)}' width='100%' class='rounded'/>".html_safe
+    else
+      "<div class='default_preview' class='rounded'><h2>Preview not available</h2><p class='text-center'>#{file.filename.content_type.downcase}</p></div>".html_safe
+    end
+  end
 end

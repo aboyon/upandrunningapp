@@ -23,13 +23,17 @@
               <a class="nav-link" href="<%= files_path %>">List</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<%= files_new_path %>">Upload</a>
+              <a class="nav-link" href="<%= new_file_path %>">Upload</a>
             </li>
           </ul>
+          <form class="form-inline my-2 my-lg-0" action="<%= files_path %>">
+            <input class="form-control mr-sm-2" type="search" name="filter" placeholder="e.g +tag1 +tag2 -tag4" aria-label="Search" value="<%= params[:filter]%>">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+          </form>
         </div>
       </nav>
     </header>
-    <div class="container main_container">
+    <div class="container-fluid main_container">
       <%= yield %>
     </div>
     <%= content_for(:javascript) %>

@@ -30,7 +30,7 @@ class Resource < ApplicationRecord
   end
 
   def tag_list
-    tags.split(',')
+    tags.to_s.split(',')
   end
 
   private

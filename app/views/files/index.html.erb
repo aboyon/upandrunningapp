@@ -1,0 +1,52 @@
+<h1>
+  File system
+  <span class="badge badge-secondary"><%= @resources.size %> records</span>
+</h1>
+
+<div class="row">
+  <div class="col-<%= (@related.present?) ? '9':'12'%>">
+    <% if @resources.any? %>
+    <table class="table table-hover table-striped">
+      <tr>
+        <thead>
+          <th>Name</th>
+          <th>Tags</th>
+          <th>UUID</th>
+          <th>Size</th>
+          <th>Content Type</th>
+        </thead>
+        <tbody>
+          <%- @resources.each do |resource| %>
+          <tr>
+            <td><a href="<%= file_path(:id => resource.id) %>"><%= resource.name %></a></td>
+            <td><%= raw generate_tag_link(resource.tag_list) %></td>
+            <td><%= resource.filename.filename %></td>
+            <td><%= format_file_size(resource.filename.byte_size) %></td>
+            <td><%= resource.filename.content_type %></td>
+          </tr>
+          <%- end %>
+        </tbody>
+      </tr>
+    </table>
+    <% else %>
+      <p text="center">There are no files yet</p>
+    <% end %>
+
+    <%= paginate @resources %>
+  </div>
+  <% if @related.present? %>
+    <div class="col-3">
+      <div class="card">
+        <h5 class="card-header">Featured</h5>
+          <ul class="list-group list-group-flush">
+          <% @related.each do |(tag,files_count)| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a href="/files/+<%= tag %>/1"><%= tag %></a>
+              <span class="badge badge-primary badge-pill"><%= files_count %></span>
+            </li>
+          <% end %>
+          </ul>
+      </div>
+    </div>
+  <% end %>
+</div>

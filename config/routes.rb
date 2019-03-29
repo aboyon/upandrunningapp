@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
-  post '/file' => 'resource#create'
-  get '/files' => 'resource#index'
-  get '/files/:filter/:page' => 'resource#index'
-  get '/files/new' => 'resource#new'
 
-  root :to => "resource#index"
+  resources :files, :as => :files, :only => [:index, :new, :show] do
+    collection do
+      get '/:filter/:page', :action => 'index'
+    end
+  end
+
+  post '/file' => 'files#create'
+  root :to => "files#index"
 end
