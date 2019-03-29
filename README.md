@@ -37,7 +37,7 @@ At this point, you already have built your container and have your images in pla
 ### Setting up database
 
 ```
-docker-compose run upandrunning_web bundle exec rake db:create
+docker-compose run upandrunning_web bundle exec rake db:create db:migrate
 ```
 Expected output:
 ```
@@ -56,4 +56,14 @@ docker-compose up
 
 ## Accessing the app
 
-It's enough to visit [http://0.0.0.0:3000](http://0.0.0.0:3000).
+- **Locally**: It's enough to visit [http://0.0.0.0:3000](http://0.0.0.0:3000).
+- [Live demo](https://upandrunningfileuploader.herokuapp.com/files).
+
+## Miscellaneous
+
+- Time tracking: This app took aroung ~12hs of development. It includes: Settiing up the container, create the github repo, kick off the rails app, and make the tweaks required to fulfill the requirements.
+- Pending improvements:
+-- Ability to update a file
+-- Ability to download the original attachment.
+-- Expose an API endpoint like http://0.0.0.0:3000/api/v1/files
+- **Issue with ActiveStorage and Heroku**. Although [it is a known issue](https://devcenter.heroku.com/articles/active-storage-on-heroku), I'd like to do a mention about it. Free Dynos in heroku are restarted daily. It means that transient data (such as the files stored through ActiveStorage) is considered as disposable and it's erased on every restart. So might lead to unexpected behaviors in the [Live demo](https://upandrunningfileuploader.herokuapp.com/files) website.
