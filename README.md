@@ -62,6 +62,7 @@ docker-compose up
 
 - **Locally**: It's enough to visit [http://0.0.0.0:3000](http://0.0.0.0:3000).
 - [Live demo](https://upandrunningfileuploader.herokuapp.com/files).
+- How to get JSON responses?: add the `.json` to listing URL in order to get a JSON response. (e.g: https://upandrunningfileuploader.herokuapp.com/files.json or https://upandrunningfileuploader.herokuapp.com/files/+house%20/1.json)
 
 ## Miscellaneous
 
