@@ -1,7 +1,7 @@
 json.total_records @resources.count
 json.records @resources do |resource|
   json.name resource.name
-  json.uuid resource.filename.filename
+  json.uuid resource.try(:filename).try(:filename)
 end
 
 if @related.present?
